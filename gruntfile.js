@@ -25,6 +25,13 @@ module.exports = function(grunt) {
 			}
 		}, // sass
 
+		bower_concat: {
+			all: {
+				dest: 'builds/development/js/_bower.js', 
+				cssDest: 'builds/development/css/_bower.css'
+			}
+		},
+
 		wiredep: {
 			task: {
 				src: 'builds/development/**/*.html'
@@ -71,12 +78,12 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
 	// Concatenate bower components into single file
-	// grunt.loadNpmTasks('grunt-bower-concat');
+	grunt.loadNpmTasks('grunt-bower-concat');
 
 	// Automatically add link and script tags for bower packages into index.html
 	grunt.loadNpmTasks('grunt-wiredep');
 
 	//main grunt
-	grunt.registerTask('default', ['wiredep', 'concat', 'sass', 'connect', 'watch']);
+	grunt.registerTask('default', ['wiredep', 'bower_concat', 'concat', 'sass', 'connect', 'watch']);
 
 }; //Wrapper function
