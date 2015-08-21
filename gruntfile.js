@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 	grunt.initConfig({
 
-		//Concat is the task name
+		// Concat is the task name
 		concat : {
 			options : {
 				seperator : '\n\n//-------------------------------------\n',
@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 				src : ['components/scripts/*.js'],
 				dest : 'builds/development/js/script.js'
 			}
-		}, //concat
+		}, // concat
 
 		sass: {
 			dist: {
@@ -23,7 +23,24 @@ module.exports = function(grunt) {
 					dest: 'builds/development/css/style.css'
 				}]
 			}
-		}, //sass
+		}, // sass
+
+		wiredep: {
+			task: {
+				src: 'builds/development/**/*.html'
+			}
+		}, // wiredep
+
+		connect: {
+			server: {
+				options: {
+					hostname: 'localhost',
+					port: 3000,
+					base: 'builds/development/',
+					livereload: true
+				}
+			}
+		},
 
 		watch: {
 			options: {
@@ -37,21 +54,9 @@ module.exports = function(grunt) {
     			],
     			tasks: ['concat', 'sass'],
   			},
-		}, 
-
-		connect: {
-			server: {
-				options: {
-					hostname: 'localhost',
-					port: 3000,
-					base: 'builds/development/',
-					livereload: true
-				}
-			}
 		}
 
-
-	}); //Init Config
+	}); // Init Config
 
 	// Concat javascript files
 	grunt.loadNpmTasks('grunt-contrib-concat');
@@ -59,13 +64,19 @@ module.exports = function(grunt) {
 	// Compile sass files into css
 	grunt.loadNpmTasks('grunt-sass');
 
-	//Watch for changes to html, js and scss files
+	// Watch for changes to html, js and scss files
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	//Live reload middleware
+	// Live reload middleware
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
+	// Concatenate bower components into single file
+	// grunt.loadNpmTasks('grunt-bower-concat');
+
+	// Automatically add link and script tags for bower packages into index.html
+	grunt.loadNpmTasks('grunt-wiredep');
+
 	//main grunt
-	grunt.registerTask('default', ['concat', 'sass', 'connect', 'watch']);
+	grunt.registerTask('default', ['wiredep', 'concat', 'sass', 'connect', 'watch']);
 
 }; //Wrapper function
